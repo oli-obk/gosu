@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svnroot/glfw/!svn/ver/1395/trunk/lib/cocoa
+END
+Makefile.cocoa
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/glfw/!svn/ver/1262/trunk/lib/cocoa/Makefile.cocoa
+END
+cocoa_fullscreen.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svnroot/glfw/!svn/ver/1395/trunk/lib/cocoa/cocoa_fullscreen.m
+END
+cocoa_glext.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/cocoa_glext.m
+END
+cocoa_init.m
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svnroot/glfw/!svn/ver/1361/trunk/lib/cocoa/cocoa_init.m
+END
+cocoa_enable.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/cocoa_enable.m
+END
+cocoa_window.m
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/glfw/!svn/ver/1260/trunk/lib/cocoa/cocoa_window.m
+END
+platform.h
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/platform.h
+END
+cocoa_thread.c
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/cocoa_thread.c
+END
+libglfw.pc.in
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svnroot/glfw/!svn/ver/1252/trunk/lib/cocoa/libglfw.pc.in
+END
+cocoa_time.m
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/cocoa_time.m
+END
+cocoa_joystick.m
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svnroot/glfw/!svn/ver/1257/trunk/lib/cocoa/cocoa_joystick.m
+END
