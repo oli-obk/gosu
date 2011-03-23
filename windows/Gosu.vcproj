@@ -42,6 +42,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/I&quot;..\dependencies\zlib&quot; /I&quot;..\dependencies\libpng&quot;"
 				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\dependencies\glfw\include&quot;;&quot;$(ProjectDir)\..\dependencies\glfw\lib&quot;;&quot;$(ProjectDir)\..\dependencies\glfw\lib\win32&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="3"
@@ -110,6 +111,7 @@
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)\..\dependencies\glfw\include&quot;;&quot;$(ProjectDir)\..\dependencies\glfw\lib&quot;;&quot;$(ProjectDir)\..\dependencies\glfw\lib\win32&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -333,7 +335,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\GosuImpl\WindowWin.cpp"
+				RelativePath="..\GosuImpl\WindowGLFW.cpp"
 				>
 			</File>
 			<File
@@ -537,11 +539,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Gosu\Sockets.hpp"
+				RelativePath="..\GosuImpl\Sockets\Sockets.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\GosuImpl\Sockets\Sockets.hpp"
+				RelativePath="..\Gosu\Sockets.hpp"
 				>
 			</File>
 			<File
@@ -568,6 +570,118 @@
 				RelativePath="..\Gosu\WinUtility.hpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="glfw"
+			>
+			<Filter
+				Name="lib"
+				>
+				<File
+					RelativePath="..\dependencies\glfw\lib\enable.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\fullscreen.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\glext.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\image.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\init.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\input.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\internal.h"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\joystick.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\stream.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\tga.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\thread.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\time.c"
+					>
+				</File>
+				<File
+					RelativePath="..\dependencies\glfw\lib\window.c"
+					>
+				</File>
+				<Filter
+					Name="win32"
+					>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\platform.h"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_enable.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_fullscreen.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_glext.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_init.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_joystick.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_thread.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_time.c"
+						>
+					</File>
+					<File
+						RelativePath="..\dependencies\glfw\lib\win32\win32_window.c"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="include"
+				>
+				<Filter
+					Name="GL"
+					>
+					<File
+						RelativePath="..\dependencies\glfw\include\GL\glfw.h"
+						>
+					</File>
+				</Filter>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
