@@ -500,6 +500,11 @@ GLFWAPI int  GLFWAPIENTRY glfwLoadTexture2D( const char *name, int flags );
 GLFWAPI int  GLFWAPIENTRY glfwLoadMemoryTexture2D( const void *data, long size, int flags );
 GLFWAPI int  GLFWAPIENTRY glfwLoadTextureImage2D( GLFWimage *img, int flags );
 
+/* GOSU HACKS */
+GLFWAPI HWND GLFWAPIENTRY glfwGetWindowHandle( void );
+GLFWAPI HDC GLFWAPIENTRY glfwGetDC( void );
+typedef void (GLFWCALL * GLFWwndProcHook)(UINT, WPARAM, LPARAM);
+GLFWAPI void GLFWAPIENTRY glfwSetWndProcHook( GLFWwndProcHook );
 
 #ifdef __cplusplus
 }

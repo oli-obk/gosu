@@ -1036,3 +1036,47 @@ GLFWAPI void GLFWAPIENTRY glfwWaitEvents( void )
     _glfwPlatformWaitEvents();
 }
 
+
+#if defined(_WIN32)
+//========================================================================
+// GOSU HACK
+// Returns the handle to the win32 window, used by gosu
+//========================================================================
+GLFWAPI HWND GLFWAPIENTRY glfwGetWindowHandle( void )
+{
+    // Is GLFW initialized?
+    if( !_glfwInitialized || !_glfwWin.opened )
+    {
+        return (HWND)-1;
+    }
+
+    return _glfwWin.window;
+}
+
+//========================================================================
+// GOSU HACK
+// Returns the handle to the gdi device context
+//========================================================================
+GLFWAPI HDC GLFWAPIENTRY glfwGetDC( void )
+{
+    // Is GLFW initialized?
+    if( !_glfwInitialized || !_glfwWin.opened )
+    {
+        return (HDC)-1;
+    }
+
+    return _glfwWin.DC;
+}
+
+GLFWAPI void GLFWAPIENTRY glfwSetWndProcHook( GLFWwndProcHook fun )
+{
+    // Is GLFW initialized?
+    if( !_glfwInitialized || !_glfwWin.opened )
+    {
+        return;
+    }
+
+    // Set callback function
+    _glfwWin.wndProcHook = fun;
+}
+#endif

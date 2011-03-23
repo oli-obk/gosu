@@ -644,6 +644,13 @@ static LRESULT CALLBACK windowProc( HWND hWnd, UINT uMsg,
 {
     int wheelDelta, iconified;
 
+    // GOSU HACKS BEGIN
+    if( _glfwWin.wndProcHook )
+    {
+        _glfwWin.wndProcHook(uMsg, wParam, lParam);
+    }
+    // GOSU HACKS END
+
     switch( uMsg )
     {
         // Window activate message? (iconification?)
@@ -1120,7 +1127,7 @@ static int createWindow( const _GLFWwndconfig *wndconfig,
     _glfwWin.window = NULL;
 
     // Set common window styles
-    dwStyle   = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VISIBLE;
+    dwStyle   = WS_CLIPSIBLINGS | WS_CLIPCHILDREN; // | WS_VISIBLE; //changed for gosu
     dwExStyle = WS_EX_APPWINDOW;
 
     // Set window style, depending on fullscreen mode

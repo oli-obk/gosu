@@ -373,6 +373,9 @@ struct _GLFWwin_struct {
     int       oldMouseLockValid;
     int       desiredRefreshRate; // Desired vertical monitor refresh rate
 
+
+// ========= GOSU HACKS ========
+    GLFWwndProcHook wndProcHook;
 };
 
 GLFWGLOBAL _GLFWwin _glfwWin;
