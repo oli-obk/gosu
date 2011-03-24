@@ -8,7 +8,7 @@ end
 Rake::RDocTask.new do |rd|  
   rd.main = "README.txt"
   rd.rdoc_dir = "reference/rdoc"
-  rd.rdoc_files.include("reference/gosu.rb", "README.txt", "COPYING.txt", *Dir["reference/*.rdoc"])
+  rd.rdoc_files.include("reference/gosu.rb", "README.txt", "COPYING", *Dir["reference/*.rdoc"])
   rd.title = "RubyGosu rdoc Reference"
   rd.template = "reference/rdoc-template/lib/allison"
 end
@@ -21,5 +21,5 @@ end
 
 desc "Build C++ reference with doxygen"
 task :cpp_docs do
-  sh "cd reference && doxygen"
+  sh "cd reference && doxygen > /dev/null"
 end

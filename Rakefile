@@ -4,7 +4,7 @@ require 'date'
 require 'rake/gempackagetask'
 
 COMMON_FILES = FileList[
-  'COPYING.txt',
+  'COPYING',
   'README.txt',
 ]
 
@@ -23,7 +23,6 @@ COMMON_RUBY_FILES = COMMON_FILES + FileList[
   'examples/media/*',
 ]
 
-GOSU_PASSWORD = lambda { ENV['GOSU_RELEASE_PASSWORD'] || raise("Please set GOSU_RELEASE_PASSWORD") }
 GOSU_VERSION = ENV['GOSU_RELEASE_VERSION'] || '0.0.0'
 
 # Sets everything except 'platform' and 'files'.
@@ -49,7 +48,15 @@ EOS
   s.summary = '2D game development library.'
 end
 
+file 'rake/upload' do
+  sh 'curl https://github.com/jlnr/github-upload/raw/master/upload.rb > rake/upload'
+  sh 'chmod +x rake/upload'
+end
+
 Dir['rake/*.rb'].each { |task| require File.expand_path(task) }
 
-task :release => [:'mac:release', :'win:release', :'linux:release',
-                  :'mac:release_gem', :'win:release_gem', :'linux:release_gem']
+task :release => [:'mac:archive', :'win:archive', :'linux:archive',
+                  :'mac:release_gem', :'win:release_gem', :'linux:release_gem'] do
+  # TODO; Fix github upload, uncomment above requirements, use this instead
+  sh "scp -P 22000 #{MAC_ARCHIVE_FILENAME} #{WINDOWS_ARCHIVE_FILENAME} #{LINUX_ARCHIVE_FILENAME} libgosu.org:/Library/WebServer/Documents/libgosu.org/downloads/"
+end
