@@ -172,7 +172,7 @@ namespace {
                 "a usage page");
             SInt32 usage = getDictSInt32(properties, CFSTR(kIOHIDPrimaryUsageKey),
                 "a usage value");
-            // Device uninteresting?
+            // Device interesting?
             return page == kHIDPage_GenericDesktop &&
                 (usage == kHIDUsage_GD_Joystick ||
                  usage == kHIDUsage_GD_GamePad ||
@@ -222,30 +222,30 @@ namespace {
             {
                 switch (usagePage)
                 {
-                    case kHIDPage_GenericDesktop:
-                        switch (usage)
-                        {
-                            case kHIDUsage_GD_Y:
-                            case kHIDUsage_GD_Ry:
-                                target.axis.push_back(Axis(dict, Axis::mainY));
-                                break;
-                            case kHIDUsage_GD_X:
-                            case kHIDUsage_GD_Rx:
-                            case kHIDUsage_GD_Z:
-                            case kHIDUsage_GD_Rz:
-                            case kHIDUsage_GD_Slider:
-                            case kHIDUsage_GD_Dial:
-                            case kHIDUsage_GD_Wheel:
-                                target.axis.push_back(Axis(dict, Axis::mainX));
-                                break;
-                            case kHIDUsage_GD_Hatswitch:
-                                target.hats.push_back(Hat(dict));
-                                break;
-                        }
+                case kHIDPage_GenericDesktop:
+                    switch (usage)
+                    {
+                    case kHIDUsage_GD_Y:
+                    case kHIDUsage_GD_Ry:
+                        target.axis.push_back(Axis(dict, Axis::mainY));
                         break;
-                    case kHIDPage_Button:
-                        target.buttons.push_back(Button(dict));
+                    case kHIDUsage_GD_X:
+                    case kHIDUsage_GD_Rx:
+                    case kHIDUsage_GD_Z:
+                    case kHIDUsage_GD_Rz:
+                    case kHIDUsage_GD_Slider:
+                    case kHIDUsage_GD_Dial:
+                    case kHIDUsage_GD_Wheel:
+                        target.axis.push_back(Axis(dict, Axis::mainX));
                         break;
+                    case kHIDUsage_GD_Hatswitch:
+                        target.hats.push_back(Hat(dict));
+                        break;
+                    }
+                    break;
+                case kHIDPage_Button:
+                    target.buttons.push_back(Button(dict));
+                    break;
                 }
             }
             else if (elementType == kIOHIDElementTypeCollection)
@@ -325,14 +325,15 @@ namespace {
             return devices.at(i);
         }
 
-        boost::array<bool, gpNum> poll()
+        void poll(boost::array<bool, gp0Num * numGamepads>& result)
         {
-            boost::array<bool, gpNum> result;
             result.assign(false);
-        
+            
             IOHIDEventStruct event;
-            for (int dev = 0; dev < devices.size(); ++dev)
+            for (int dev = 0; dev < numGamepads && dev < devices.size(); ++dev)
             {
+                int rangeOffset = gp0Num * dev - gp0RangeBegin;
+                
                 // Axis
                 for (int ax = 0; ax < devices[dev].axis.size(); ++ax)
                 {
@@ -344,12 +345,12 @@ namespace {
                     if (event.value < (3 * a.min + 1 * a.max) / 4.0)
                     {
                         if (a.wasNeutralOnce)
-                            result[(a.role == Axis::mainX ? gpLeft : gpUp) - gpRangeBegin] = true;
+                            result[(a.role == Axis::mainX ? gp0Left  : gp0Up)   + rangeOffset] = true;
                     }
                     else if (event.value > (1 * a.min + 3 * a.max) / 4.0)
                     {
                         if (a.wasNeutralOnce)
-                            result[(a.role == Axis::mainX ? gpRight : gpDown) - gpRangeBegin] = true;
+                            result[(a.role == Axis::mainX ? gp0Right : gp0Down) + rangeOffset] = true;
                     }
                     else
                         a.wasNeutralOnce = true;
@@ -373,32 +374,32 @@ namespace {
                     {
                         // Must...resist...doing...crappy...fallthrough...magic... 
                         case 0:
-                            result[gpUp - gpRangeBegin] = true;
+                            result[gp0Up    + rangeOffset] = true;
                             break;
                         case 1:
-                            result[gpUp - gpRangeBegin] = true;
-                            result[gpRight - gpRangeBegin] = true;
+                            result[gp0Up    + rangeOffset] = true;
+                            result[gp0Right + rangeOffset] = true;
                             break;
                         case 2:
-                            result[gpRight - gpRangeBegin] = true;
+                            result[gp0Right + rangeOffset] = true;
                             break;
                         case 3:
-                            result[gpDown - gpRangeBegin] = true;
-                            result[gpRight - gpRangeBegin] = true;
+                            result[gp0Down  + rangeOffset] = true;
+                            result[gp0Right + rangeOffset] = true;
                             break;
                         case 4:
-                            result[gpDown - gpRangeBegin] = true;
+                            result[gp0Down  + rangeOffset] = true;
                             break;
                         case 5:
-                            result[gpDown - gpRangeBegin] = true;
-                            result[gpLeft - gpRangeBegin] = true;
+                            result[gp0Down  + rangeOffset] = true;
+                            result[gp0Left  + rangeOffset] = true;
                             break;
                         case 6:
-                            result[gpLeft - gpRangeBegin] = true;
+                            result[gp0Left  + rangeOffset] = true;
                             break;
                         case 7:
-                            result[gpUp - gpRangeBegin] = true;
-                            result[gpLeft - gpRangeBegin] = true;
+                            result[gp0Up    + rangeOffset] = true;
+                            result[gp0Left  + rangeOffset] = true;
                             break;
                     }
                 }
@@ -411,11 +412,9 @@ namespace {
                         devices[dev].buttons[btn].cookie, &event));
                     
                     if (event.value >= 1)
-                        result[gpButton0 + btn - gpRangeBegin] = true;
+                        result[gp0Button0 + btn + rangeOffset] = true;
                 }
             }
-            
-            return result;
         }
     };
 }
@@ -426,7 +425,8 @@ namespace Gosu
 	std::wstring macRomanToWstring(const std::string& s);
 }
 
-namespace {
+namespace
+{
     const unsigned numScancodes = 128;
     
     boost::array<wchar_t, numScancodes> idChars;
@@ -733,18 +733,17 @@ void Gosu::Input::update()
     pimpl->queue.clear();
     
     static System sys;
-    boost::array<bool, gpNum> gpState = sys.poll();
-    for (unsigned i = 0; i < gpNum; ++i)
-    {
-        if (buttonStates[i + gpRangeBegin] != gpState[i])
+    static boost::array<bool, gp0Num * numGamepads> gpState;
+    sys.poll(gpState);
+    for (unsigned i = 0, id = gp0RangeBegin; i < gpState.size(); ++i, ++id)
+        if (buttonStates[id] != gpState[i])
         {
-            buttonStates[i + gpRangeBegin] = gpState[i];
+            buttonStates[id] = gpState[i];
             if (gpState[i] && onButtonDown)
-                onButtonDown(Button(gpRangeBegin + i));
+                onButtonDown(Button(id));
             else if (!gpState[i] && onButtonUp)
-                onButtonUp(Button(gpRangeBegin + i));
+                onButtonUp(Button(id));
         }
-    }
 }
 
 Gosu::TextInput* Gosu::Input::textInput() const

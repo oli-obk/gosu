@@ -256,7 +256,7 @@ namespace Gosu
     }
     
     const char* cstrFromSymbol(VALUE symbol) {
-      return rb_id2name(SYM2ID(symbol));
+        return rb_id2name(SYM2ID(symbol));
     }
 }
 %}
@@ -547,10 +547,15 @@ namespace Gosu {
 
 // Button ID constants
 // Does not matter that it's the Mac file, %include only analyses symbols to export, not their values.
+%rename("GpLeft")   gpLeft;
+%rename("GpRight")  gpRight;
+%rename("GpUp")     gpUp;
+%rename("GpDown")   gpDown;
+%rename("GpButton") gpButton;
 %include "../Gosu/ButtonsMac.hpp"
 %init %{
     GosusDarkSide::oncePerTick = GosusDarkSide::yieldToOtherRubyThreads;
-	// While we are at it, to some healthy srand() - otherwise unavailable to Ruby people
+	// While we are at it, do some healthy srand() - otherwise unavailable to Ruby people
 	std::srand(static_cast<unsigned int>(std::time(0)));
     std::rand(); // and flush the first value
 %}

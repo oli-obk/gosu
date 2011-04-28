@@ -105,36 +105,44 @@ namespace Gosu
         msWheelDown,
         msRangeEnd,
         
-        gpRangeBegin,
-        gpLeft = gpRangeBegin,
-        gpRight,
-        gpUp,
-        gpDown,
-        gpButton0,
-        gpButton1,
-        gpButton2,
-        gpButton3,
-        gpButton4,
-        gpButton5,
-        gpButton6,
-        gpButton7,
-        gpButton8,
-        gpButton9,
-        gpButton10,
-        gpButton11,
-        gpButton12,
-        gpButton13,
-        gpButton14,
-        gpButton15,
-        gpRangeEnd = gpButton15,
+        gp0RangeBegin,
+        gp0Left = gp0RangeBegin,
+        gp0Right,
+        gp0Up,
+        gp0Down,
+        gp0Button0,
+        gp0Button1,
+        gp0Button2,
+        gp0Button3,
+        gp0Button4,
+        gp0Button5,
+        gp0Button6,
+        gp0Button7,
+        gp0Button8,
+        gp0Button9,
+        gp0Button10,
+        gp0Button11,
+        gp0Button12,
+        gp0Button13,
+        gp0Button14,
+        gp0Button15,
+        gp0RangeEnd = gp0Button15,
         
         kbNum = kbRangeEnd - kbRangeBegin + 1,
         msNum = msRangeEnd - msRangeBegin + 1,
-        gpNum = gpRangeEnd - gpRangeBegin + 1,
+        gp0Num = gp0RangeEnd - gp0RangeBegin + 1,
         
-        numButtons = gpRangeEnd + 1,
+        numGamepads = 4,
+        numButtons = gp0RangeEnd + gp0Num * numGamepads + 1,
 		noButton = 0xffffffff
     };
+    
+    inline ButtonName gpLeft  (int index = 0) { return static_cast<ButtonName>(gp0Left  + index * gp0Num); }
+    inline ButtonName gpRight (int index = 0) { return static_cast<ButtonName>(gp0Right + index * gp0Num); }
+    inline ButtonName gpUp    (int index = 0) { return static_cast<ButtonName>(gp0Up    + index * gp0Num); }
+    inline ButtonName gpDown  (int index = 0) { return static_cast<ButtonName>(gp0Down  + index * gp0Num); }
+    inline ButtonName gpButton(int n, int index = 0)
+                                              { return static_cast<ButtonName>(gp0Button0 + n + index * gp0Num); }
 }
     
 #endif
