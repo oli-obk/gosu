@@ -21,6 +21,9 @@ enum ZOrder
 };
 
 typedef std::vector<std::tr1::shared_ptr<Gosu::Image> > Animation;
+using Gosu::Rotate;
+using Gosu::PositionOfCenter;
+using Gosu::ZPosSet;
 
 class Star
 {
@@ -51,9 +54,8 @@ public:
     {
         Gosu::Image& image =
             *animation.at(Gosu::milliseconds() / 100 % animation.size());
-
-        image.draw(posX - image.width() / 2.0, posY - image.height() / 2.0,
-            zStars, 1, 1, color, Gosu::amAdd);
+        image.draw(PositionOfCenter(posX, posY), ZPosSet(zStars),
+                    color, Gosu::amAdd);
     }
 };
 
@@ -113,7 +115,7 @@ public:
 
     void draw() const
     {
-        image.drawRot(posX, posY, zPlayer, angle);
+        image.draw(PositionOfCenter(posX, posY), ZPosSet(zPlayer), Rotate(angle));
     }
 
     void collectStars(std::list<Star>& stars)
@@ -177,7 +179,7 @@ public:
     void draw()
     {
         player.draw();
-        backgroundImage->draw(0, 0, zBackground);
+        backgroundImage->draw(ZPosSet(zBackground));
 
         for (std::list<Star>::const_iterator i = stars.begin();
             i != stars.end(); ++i)

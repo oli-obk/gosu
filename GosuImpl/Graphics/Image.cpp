@@ -110,6 +110,43 @@ void Gosu::Image::drawRot(double x, double y, ZPos z,
                c, z, mode);
 }
 
+#if defined(GOSU_CPP11_ENABLED)
+void Gosu::Image::draw_temp(   double x, double y,
+                        ZPos z,
+                        double factorX, double factorY,
+                        double angle,
+                        double centerX, double centerY,
+                        Color c1, Color c2, Color c3, Color c4,
+                        AlphaMode mode) const
+{
+    double sizeX = width()  * factorX;
+    double sizeY = height() * factorY;
+    double offsX = offsetX(angle, 1);
+    double offsY = offsetY(angle, 1);
+
+    // Offset to the centers of the original Image's edges when it is rotated
+    // by <angle> degrees.
+    double distToLeftX   = +offsY * sizeX * centerX;
+    double distToLeftY   = -offsX * sizeX * centerX;
+    double distToRightX  = -offsY * sizeX * (1 - centerX);
+    double distToRightY  = +offsX * sizeX * (1 - centerX);
+    double distToTopX    = +offsX * sizeY * centerY;
+    double distToTopY    = +offsY * sizeY * centerY;
+    double distToBottomX = -offsX * sizeY * (1 - centerY);
+    double distToBottomY = -offsY * sizeY * (1 - centerY);
+
+    data->draw(x + distToLeftX  + distToTopX,
+               y + distToLeftY  + distToTopY, c1,
+               x + distToRightX + distToTopX,
+               y + distToRightY + distToTopY, c2,
+               x + distToLeftX  + distToBottomX,
+               y + distToLeftY  + distToBottomY, c3,
+               x + distToRightX + distToBottomX,
+               y + distToRightY + distToBottomY, c4,
+               z, mode);
+}
+#endif //defined(GOSU_CPP11_ENABLED)
+
 Gosu::ImageData& Gosu::Image::getData() const
 {
     return *data;
