@@ -49,7 +49,16 @@ namespace Gosu
     class Graphics
     {
         struct Impl;
+        
+#if !defined(GOSU_CPP11_ENABLED)
         const std::auto_ptr<Impl> pimpl;
+#else //!defined(GOSU_CPP11_ENABLED)
+        std::unique_ptr<Impl> pimpl;
+    public:
+        Graphics(Graphics&&) = default;
+        Graphics& operator=(Graphics&&) = default;
+    private:
+#endif //!defined(GOSU_CPP11_ENABLED)
 
     public:
         Graphics(unsigned physicalWidth, unsigned physicalHeight, bool fullscreen);
@@ -97,7 +106,7 @@ namespace Gosu
         //! the resulting macro will simply return these values when you ask
         //! it.
         //! Most usually, the return value is passed to Image::Image().
-        std::auto_ptr<Gosu::ImageData> endRecording(int width, int height);
+        GOSU_UNIQUE_PTR<Gosu::ImageData> endRecording(int width, int height);
         
         //! Pushes one transformation onto the transformation stack.
         void pushTransform(const Transform& transform);
@@ -125,7 +134,7 @@ namespace Gosu
 
         //! Turns a portion of a bitmap into something that can be drawn on
         //! this graphics object.
-        std::auto_ptr<ImageData> createImage(const Bitmap& src,
+        GOSU_UNIQUE_PTR<ImageData> createImage(const Bitmap& src,
             unsigned srcX, unsigned srcY, unsigned srcWidth, unsigned srcHeight,
             unsigned borderFlags);
     };

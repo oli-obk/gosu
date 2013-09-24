@@ -141,8 +141,15 @@ namespace Gosu
     class Resource
     {
         // Non-copyable
+#ifndef GOSU_CPP11_ENABLED
         Resource(const Resource&);
         Resource& operator=(const Resource&);
+#else
+        Resource(const Resource&) = delete;
+        Resource& operator=(const Resource&) = delete;
+        Resource(Resource&&) = default;
+        Resource& operator=(Resource&&) = default;
+#endif
 
     public:
         Resource()
@@ -237,7 +244,15 @@ namespace Gosu
     class File : public Resource
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        File(File&&) = default;
+        File& operator=(File&&) = default;
+    private:
+#endif
 
     public:
         explicit File(const std::wstring& filename, FileMode mode = fmRead);

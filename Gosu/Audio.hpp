@@ -109,10 +109,16 @@ namespace Gosu
         class BaseData;
         class ModuleData;
         class StreamData;
+#if !defined(GOSU_CPP11_ENABLED)
         Song(const Song&);
         Song& operator=(const Song&);
-        std::auto_ptr<BaseData> data;
-    
+#else //!defined(GOSU_CPP11_ENABLED)
+    public:
+        Song(Song&&) = default;
+        Song& operator=(Song&&) = default;
+    private:
+#endif //!defined(GOSU_CPP11_ENABLED)
+        GOSU_UNIQUE_PTR<BaseData> data;
     public:
         //! Constructs a song that can be played on the provided audio system
         //! and loads the song from a file. The type is determined from the

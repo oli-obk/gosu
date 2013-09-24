@@ -28,7 +28,15 @@ namespace Gosu
     class Window
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        Window(Window&&) = default;
+        Window& operator=(Window&&) = default;
+    private:
+#endif
 	
     public:
         //! Constructs a Window.

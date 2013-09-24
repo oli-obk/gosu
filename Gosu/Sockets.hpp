@@ -7,6 +7,7 @@
 #include <Gosu/TR1.hpp>
 #include <cstddef>
 #include <string>
+#include <Gosu/Platform.hpp>
 
 namespace Gosu
 {
@@ -35,7 +36,15 @@ namespace Gosu
     class MessageSocket
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        MessageSocket(MessageSocket&&) = default;
+        MessageSocket& operator=(MessageSocket&&) = default;
+    private:
+#endif
 
     public:
         //! Opens a message socket for listening at the specified port.
@@ -84,7 +93,15 @@ namespace Gosu
     class CommSocket
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        CommSocket(CommSocket&&) = default;
+        CommSocket& operator=(CommSocket&&) = default;
+    private:
+#endif
 
     public:
         CommSocket(CommMode mode, SocketAddress targetAddress,
@@ -117,7 +134,15 @@ namespace Gosu
     class ListenerSocket
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        ListenerSocket(ListenerSocket&&) = default;
+        ListenerSocket& operator=(ListenerSocket&&) = default;
+    private:
+#endif
 
     public:
         ListenerSocket(SocketPort port);

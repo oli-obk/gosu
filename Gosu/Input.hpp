@@ -75,7 +75,15 @@ namespace Gosu
     class Input
     {
         struct Impl;
+#ifndef GOSU_CPP11_ENABLED
         const std::auto_ptr<Impl> pimpl;
+#else
+        std::unique_ptr<Impl> pimpl;
+    public:
+        Input(Input&&) = default;
+        Input& operator=(Input&&) = default;
+    private:
+#endif
 
     public:
         #ifdef GOSU_IS_WIN
