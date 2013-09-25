@@ -5,6 +5,7 @@
 #define GOSU_GRAPHICSBASE_HPP
 
 #include <Gosu/Platform.hpp>
+#include <Gosu/Utility.hpp>
 #include <limits>
 
 namespace Gosu
@@ -51,13 +52,29 @@ namespace Gosu
     };
 #endif
     
-    enum FontFlags
+#if defined(GOSU_CPP11_ENABLED)
+    enum class FontFlag
+    {
+        Bold         = 1,
+        Italic       = 2,
+        Underline    = 4
+    };
+#else
+    enum FontFlag
     {
         ffBold         = 1,
         ffItalic       = 2,
-        ffUnderline    = 4,
-        ffCombinations = 8
+        ffUnderline    = 4
     };
+#endif
+    static const size_t FontFlagCombinations = 8;
+    typedef FlagWrapper<FontFlag> FontFlags;
+#if defined(GOSU_CPP11_ENABLED)
+    GOSU_DEPRECATED static const FontFlags ffBold = FontFlag::Bold;
+    GOSU_DEPRECATED static const FontFlags ffItalic = FontFlag::Italic;
+    GOSU_DEPRECATED static const FontFlags ffUnderline = FontFlag::Underline;
+#endif
+    GOSU_DEPRECATED static const size_t ffCombinations = FontFlagCombinations;
     
     enum TextAlign
     {

@@ -52,7 +52,7 @@ namespace Gosu
         }
         unsigned textWidth(const std::wstring& text,
             const std::wstring& fontFace, unsigned fontHeight,
-            unsigned fontFlags)
+            FontFlags fontFlags)
         {
             g_type_init();
 
@@ -118,7 +118,7 @@ namespace Gosu
         }
         void drawText(Bitmap& bitmap, const std::wstring& text, int x, int y,
             Color c, const std::wstring& fontFace, unsigned fontHeight,
-            unsigned fontFlags)
+            FontFlags fontFlags)
         {
             textWidth(text, fontFace, fontHeight, fontFlags);
 
@@ -251,7 +251,7 @@ namespace Gosu
 
 unsigned Gosu::textWidth(const std::wstring& text,
     const std::wstring& fontName, unsigned fontHeight,
-    unsigned fontFlags)
+    FontFlags fontFlags)
 {
     if (text.find_first_of(L"\r\n") != std::wstring::npos)
         throw std::invalid_argument("the argument to textWidth cannot contain line breaks");
@@ -264,7 +264,7 @@ unsigned Gosu::textWidth(const std::wstring& text,
 
 void Gosu::drawText(Bitmap& bitmap, const std::wstring& text, int x, int y,
     Color c, const std::wstring& fontName, unsigned fontHeight,
-    unsigned fontFlags)
+    FontFlags fontFlags)
 {
     if (text.find_first_of(L"\r\n") != std::wstring::npos)
         throw std::invalid_argument("the argument to drawText cannot contain line breaks");

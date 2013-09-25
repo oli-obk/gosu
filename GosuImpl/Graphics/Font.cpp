@@ -14,7 +14,8 @@ struct Gosu::Font::Impl
 {
     Graphics* graphics;
     wstring name;
-    unsigned height, flags;
+    unsigned height;
+    FontFlags flags;
 
     // Unicode planes of 2^16 characters each. On Windows, where wchar_t is only 16 bits wide, only
     // the first plane will ever be touched.
@@ -28,14 +29,14 @@ struct Gosu::Font::Impl
     
     map<wstring, tr1::shared_ptr<Image> > entityCache;
     
-    CharInfo& charInfo(wchar_t wc, unsigned flags)
+    CharInfo& charInfo(wchar_t wc, FontFlags flags)
     {
         size_t planeIndex = wc / 65536;
         size_t charIndex  = wc % 65536;
         
         if (planeIndex >= 16)
             throw invalid_argument("Unicode plane out of reach");
-        if (flags >= ffCombinations)
+        if (static_cast<size_t>(flags) >= ffCombinations)
             throw invalid_argument("Font flags out of range");
         
         if (!planes[planeIndex][flags].get())
@@ -54,7 +55,7 @@ struct Gosu::Font::Impl
         }
         
         wchar_t wc = fs.charAt(i);
-        unsigned flags = fs.flagsAt(i);
+        FontFlags flags = fs.flagsAt(i);
         CharInfo& info = charInfo(wc, flags);
         
         if (info.image.get())
@@ -82,7 +83,7 @@ struct Gosu::Font::Impl
 };
 
 Gosu::Font::Font(Graphics& graphics, const wstring& fontName, unsigned fontHeight,
-    unsigned fontFlags)
+    FontFlags fontFlags)
 : pimpl(new Impl)
 {
     pimpl->graphics = &graphics;
@@ -101,7 +102,7 @@ unsigned Gosu::Font::height() const
     return pimpl->height / 2;
 }
 
-unsigned Gosu::Font::flags() const
+Gosu::FontFlags Gosu::Font::flags() const
 {
     return pimpl->flags;
 }
@@ -149,10 +150,10 @@ void Gosu::Font::drawRel(const wstring& text, double x, double y, ZPos z,
 void Gosu::Font::setImage(wchar_t wc, const Image& image)
 {
     for (unsigned flags = 0; flags < ffCombinations; ++flags)
-        setImage(wc, flags, image);
+        setImage(wc, FontFlags::from_integral(flags), image);
 }
 
-void Gosu::Font::setImage(wchar_t wc, unsigned fontFlags, const Image& image)
+void Gosu::Font::setImage(wchar_t wc, FontFlags fontFlags, const Image& image)
 {
     Impl::CharInfo& ci = pimpl->charInfo(wc, fontFlags);
     if (ci.image.get())
