@@ -16,6 +16,26 @@ namespace Gosu
     
     //! Determines the way colors are combined when one is drawn onto
     //! another.
+#if defined(GOSU_CPP11_ENABLED)
+    enum class AlphaMode
+    {
+        //! The color's channels will be interpolated. The alpha channel
+        //! specifies the opacity of the new color, 255 is full opacity.
+        Default,
+        Interpolate = Default,
+        //! The colors' channels will be added. The alpha channel specifies
+        //! the percentage of the new color's channels that will be added
+        //! to the old color's channels.
+        Additive,
+        //! The color's channels will be multiplied with each other.
+        Multiply
+    };
+    GOSU_DEPRECATED static const AlphaMode amDefault = AlphaMode::Default;
+    GOSU_DEPRECATED static const AlphaMode amInterpolate = AlphaMode::Interpolate;
+    GOSU_DEPRECATED static const AlphaMode amAdd = AlphaMode::Additive;
+    GOSU_DEPRECATED static const AlphaMode amAdditive = AlphaMode::Additive;
+    GOSU_DEPRECATED static const AlphaMode amMultiply = AlphaMode::Multiply;
+#else
     enum AlphaMode
     {
         //! The color's channels will be interpolated. The alpha channel
@@ -29,6 +49,7 @@ namespace Gosu
         //! The color's channels will be multiplied with each other.
         amMultiply
     };
+#endif
     
     enum FontFlags
     {
